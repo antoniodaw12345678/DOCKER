@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.env.*
+.~lock.*
+*.docx
+*.pdf
+*.md
+notas/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/

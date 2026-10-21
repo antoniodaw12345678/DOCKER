@@ -1,0 +1,31 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: notas-web:latest
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_URL: redis://cache:6379
+      TITULO_APP: Tablón de notas
+    depends_on:
+      cache:
+        condition: service_healthy
+    restart: unless-stopped
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - notas-datos:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+volumes:
+  notas-datos:
